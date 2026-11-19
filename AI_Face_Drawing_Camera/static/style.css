@@ -1,0 +1,39 @@
+* { box-sizing: border-box; }
+:root { color-scheme: dark; }
+body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 12% 0%, #1c3156 0, transparent 36%),
+        linear-gradient(135deg, #080d19, #111b31 58%, #090e1b);
+    color: #edf3ff;
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+.page { width: min(1050px, 94%); margin: auto; padding: 38px 0 28px; }
+.eyebrow { color: #7fe7d3; font-size: 11px; font-weight: 800; letter-spacing: 2px; }
+h1 { margin: 12px 0 10px; font-size: clamp(32px, 5vw, 52px); line-height: 1.1; }
+h1 span { color: #7fe7d3; }
+.hero p { color: #aab8d3; margin: 0 0 24px; line-height: 1.6; }
+.studio { overflow: hidden; background: #111a2d; border: 1px solid #2a3958; border-radius: 18px; box-shadow: 0 22px 65px #0007; }
+.topbar { display: flex; justify-content: space-between; gap: 12px; padding: 16px 19px; font-size: 12px; font-weight: 800; letter-spacing: 1px; }
+.live-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #55e69b; margin-right: 8px; box-shadow: 0 0 12px #55e69b; }
+.privacy { color: #8d9bb8; font-weight: 500; letter-spacing: 0; }
+.camera { display: grid; place-items: center; background: #03060d; }
+.camera img { display: block; width: 100%; max-height: 68vh; object-fit: contain; }
+.settings { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 18px; padding: 20px; }
+.control { display: flex; flex-direction: column; gap: 8px; }
+label { font-weight: 700; font-size: 14px; }
+select { width: 100%; padding: 12px; color: #f5f7ff; background: #1b2945; border: 1px solid #405477; border-radius: 9px; font-size: 14px; }
+#status { grid-column: 1 / -1; margin: 0; color: #8fe5d1; font-size: 13px; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 17px; }
+.steps article { padding: 17px; border: 1px solid #293854; border-radius: 13px; background: #111a2dbb; }
+.steps b { color: #7fe7d3; font-size: 13px; }
+.steps p, .tip, footer { color: #9eacc7; font-size: 13px; line-height: 1.6; }
+.tip { margin: 18px 2px 0; }
+footer { text-align: center; padding-top: 22px; }
+@media (max-width: 650px) {
+    .page { padding-top: 25px; }
+    .settings, .steps { grid-template-columns: 1fr; }
+    #status { grid-column: auto; }
+    .topbar { flex-direction: column; }
+}

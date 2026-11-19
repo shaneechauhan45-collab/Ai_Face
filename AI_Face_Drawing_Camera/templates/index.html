@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Face Drawing Studio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<main class="page">
+    <header class="hero">
+        <div class="eyebrow">PYTHON • COMPUTER VISION • CREATIVE AI</div>
+        <h1>AI Face <span>Drawing Studio</span></h1>
+        <p>Turn your live camera into a real-time artistic face drawing experience.</p>
+    </header>
+
+    <section class="studio">
+        <div class="topbar">
+            <span><i class="live-dot"></i> LIVE CAMERA</span>
+            <span class="privacy">Processed locally on this computer</span>
+        </div>
+        <div class="camera">
+            <img src="{{ url_for('video_feed') }}" id="video" alt="Live artistic camera feed">
+        </div>
+
+        <div class="settings">
+            <div class="control">
+                <label for="style">Drawing style</label>
+                <select id="style">
+                    <option value="original">Original camera</option>
+                    <option value="pencil">Pencil sketch</option>
+                    <option value="line_art">Black &amp; white line art</option>
+                    <option value="cartoon">Cartoon drawing</option>
+                    <option value="digital_painting">Digital painting</option>
+                </select>
+            </div>
+            <div class="control">
+                <label for="overlay">Face-following drawing</label>
+                <select id="overlay">
+                    <option value="none">No overlay</option>
+                    <option value="face_mesh">Face mesh</option>
+                    <option value="glasses">Digital glasses</option>
+                    <option value="crown">Crown</option>
+                    <option value="sparkles">Sparkles</option>
+                    <option value="all">All overlays</option>
+                </select>
+            </div>
+            <p id="status" aria-live="polite">Loading camera…</p>
+        </div>
+    </section>
+
+    <section class="steps">
+        <article><b>01 — Detect</b><p>MediaPipe detects face landmarks in each frame.</p></article>
+        <article><b>02 — Transform</b><p>OpenCV applies sketch, line-art, cartoon or painting effects.</p></article>
+        <article><b>03 — Draw</b><p>Digital overlays are placed using tracked facial positions.</p></article>
+    </section>
+
+    <p class="tip">Tip: use good front lighting, look toward the camera and keep your face inside the frame.</p>
+    <footer>AI Face Drawing Studio · Local webcam demo</footer>
+</main>
+
+<script>
+const styleSelect = document.getElementById("style");
+const overlaySelect = document.getElementById("overlay");
+const status = document.getElementById("status");
+
+async function updateSettings() {
+    status.textContent = "Updating drawing…";
+    try {
+        const response = await fetch("/settings", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                style: styleSelect.value,
+                overlay: overlaySelect.value
+            })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || "Could not update settings");
+        status.textContent = "Ready — " +
+            styleSelect.options[styleSelect.selectedIndex].text +
+            " + " + overlaySelect.options[overlaySelect.selectedIndex].text;
+    } catch (error) {
+        status.textContent = error.message;
+    }
+}
+
+styleSelect.addEventListener("change", updateSettings);
+overlaySelect.addEventListener("change", updateSettings);
+
+document.getElementById("video").addEventListener("error", () => {
+    status.textContent = "Camera stream error. Check the Python terminal and camera permissions.";
+});
+
+status.textContent = "Camera stream starting. Choose a style and overlay.";
+</script>
+</body>
+</html>
